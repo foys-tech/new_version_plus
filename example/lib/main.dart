@@ -26,14 +26,17 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   String release = "";
+
   @override
   void initState() {
     super.initState();
 
     // Instantiate NewVersion manager object (Using GCP Console app as example)
     final newVersion = NewVersionPlus(
-      iOSId: 'com.disney.disneyplus', androidId: 'com.disney.disneyplus',
-      androidPlayStoreCountry: "es_ES", androidHtmlReleaseNotes: true, //support country code
+      iOSId: 'com.disney.disneyplus',
+      androidId: 'com.disney.disneyplus',
+      androidPlayStoreCountry: "es_ES",
+      androidHtmlReleaseNotes: true, //support country code
     );
     //for basic status check
     basicStatusCheck(newVersion);
@@ -45,6 +48,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   basicStatusCheck(NewVersionPlus newVersion) async {
     final version = await newVersion.getVersionStatus();
+    if (!mounted) return;
     if (version != null) {
       release = version.releaseNotes ?? "";
       setState(() {});
@@ -57,6 +61,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   advancedStatusCheck(NewVersionPlus newVersion) async {
     final status = await newVersion.getVersionStatus();
+    if (!mounted) return;
     if (status != null) {
       debugPrint(status.releaseNotes);
       debugPrint(status.appStoreLink);
